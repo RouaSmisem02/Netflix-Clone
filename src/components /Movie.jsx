@@ -4,11 +4,10 @@ import ModalMovie from './ModalMovie';
 
 const Movie = ({ item, showModal }) => {
   const [showDescription, setShowDescription] = useState(false);
-  const [cardHeight, setCardHeight] = useState('300px'); // Initial height
+  const [cardHeight, setCardHeight] = useState('300px'); 
 
   const toggleDescription = () => {
     setShowDescription(!showDescription);
-    // Update card height dynamically based on whether "Show More" or "Show Less" is clicked
     setCardHeight(showDescription ? '400px' : 'auto');
   };
 
@@ -34,8 +33,7 @@ const Movie = ({ item, showModal }) => {
           </Button>
         </Card.Body>
       </Card>
-      {/* <ModalMovie movie={item} show={showModal} handleClose={() => setShowModal(false)} /> */}
-      {/* Uncomment the line above if you're using this component */}
+     
     </>
   );
 };
