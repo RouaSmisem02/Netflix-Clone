@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Button } from 'react-bootstrap';
-import ModalMovie from './ModalMovie';
+import ModalMovie from './ModalMovie'; // Assuming ModalMovie and MovieList are correctly imported
+import MovieList from './MovieList'; // Assuming this import is needed
 
 const Movie = ({ item, showModal }) => {
   const [showDescription, setShowDescription] = useState(false);
@@ -38,4 +39,4 @@ const Movie = ({ item, showModal }) => {
   );
 };
 
-export default MovieList;
+export default Movie; // Corrected export
