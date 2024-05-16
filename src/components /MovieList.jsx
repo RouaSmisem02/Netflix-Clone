@@ -1,46 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
 import { Row, Col } from 'react-bootstrap';
-import Movie from './Movie';
-import ModalMovie from './ModalMovie';
+import axios from "axios";
+import Movie from "./Movie";
+import ModalMovie from "./ModalMovie";
 
-function MovieList({ moviesData }) {
-  const [showModal, setShowModal] = useState(false);
-  const [clickedMovie, setClickedMovie] = useState({});
-  const [favoriteMovies, setFavoriteMovies] = useState([]);
+const MovieList = ({ moviesData }) => {
+    const [showModal, setShowModal] = useState(false);
+    const [clickedMovie, setClickedMovie] = useState({});
+    const [favoriteMovies, setFavoriteMovies] = useState([]);
 
-  const handleClose = () => setShowModal(false);
+    useEffect(() => {
+        const fetchFavoriteMovies = async () => {
+            try {
+                const response = await axios.get("https://movie-management.onrender.com/getmovie");
+                setFavoriteMovies(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
 
-  const handleShowModal = (item) => {
-    setShowModal(true);
-    setClickedMovie(item);
-  };
+        fetchFavoriteMovies();
+    }, []);
 
-  useEffect(() => {
-    const getAllFavMovies = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/getmovie');
-        console.log(response.data);
-        setFavoriteMovies(response.data);
-      } catch (error) {
-        console.log(error);
-      }
+    const handleCloseModal = () => setShowModal(false);
+
+    const handleShowModal = (item) => {
+        setShowModal(true);
+        setClickedMovie(item);
     };
-    getAllFavMovies();
-  }, []);
 
-  return (
-    <>
-      <Row>
-        {moviesData.map((item) => (
-          <Col key={item.id}>
-            <Movie item={item} showModal={handleShowModal} />
-          </Col>
-        ))}
-      </Row>
-      <ModalMovie show={showModal} handleClose={handleClose} clickedMovie={clickedMovie} />
-    </>
-  );
-}
+    return (
+        <>
+            <Row>
+                {moviesData.map(item => (
+                    <Col key={item.id}>
+                        <Movie item={item} showModal={handleShowModal} />
+                    </Col>
+                ))}
+            </Row>
+            <ModalMovie 
+                show={showModal} 
+                handleClose={handleCloseModal} 
+                clickedMovie={clickedMovie} 
+                favoriteMovies={favoriteMovies} 
+                setFavoriteMovies={setFavoriteMovies} 
+            />
+        </>
+    );
+};
 
 export default MovieList;
