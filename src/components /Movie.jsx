@@ -19,34 +19,28 @@ const MovieList = ({ moviesData }) => {
             }
         };
 
-        fetchFavoriteMovies();
-    }, []);
-
-    const handleCloseModal = () => setShowModal(false);
-
-    const handleShowModal = (item) => {
-        setShowModal(true);
-        setClickedMovie(item);
-    };
-
-    return (
-        <>
-            <Row>
-                {moviesData.map(item => (
-                    <Col key={item.id}>
-                        <Movie item={item} showModal={handleShowModal} />
-                    </Col>
-                ))}
-            </Row>
-            <ModalMovie 
-                show={showModal} 
-                handleClose={handleCloseModal} 
-                clickedMovie={clickedMovie} 
-                favoriteMovies={favoriteMovies} 
-                setFavoriteMovies={setFavoriteMovies} 
-            />
-        </>
-    );
+  return (
+    <Card style={{ width: '20rem', marginBottom: '20px', backgroundColor: '#B8B8B8', fontFamily: 'Arial, sans-serif' }}>
+      <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w185${item.posterPath}`} />
+      <Card.Body>
+        <Card.Title>{item.title}</Card.Title>
+        {showDescription ? (
+          <div>
+            <Card.Text>{item.overview}</Card.Text>
+            <Button variant="link" onClick={toggleDescription} style={{ color: 'blue', fontWeight: 'bold' }}>View Less</Button>
+          </div>
+        ) : (
+          <div>
+            <Card.Text>{item.overview.substring(0, 100)}...</Card.Text>
+            <Button variant="link" onClick={toggleDescription} style={{ color: 'blue', fontWeight: 'bold' }}>View More</Button>
+          </div>
+        )}
+        <Button variant="primary" onClick={() => showModal(item)} style={{ marginTop: '10px', backgroundColor: 'white', color: 'blue', fontWeight: 'bold', width: '100%' }}>
+          Add to Favorites Page
+        </Button>
+      </Card.Body>
+    </Card>
+  );
 };
 
 export default MovieList;
