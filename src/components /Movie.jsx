@@ -9,7 +9,7 @@ const Movie = ({ item, showModal }) => {
   const toggleDescription = () => {
     setShowDescription(!showDescription);
     // Update card height dynamically based on whether "Show More" or "Show Less" is clicked
-    setCardHeight(showDescription ? '300px' : 'auto');
+    setCardHeight(showDescription ? '400px' : 'auto');
   };
 
   return (
