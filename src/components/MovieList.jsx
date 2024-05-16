@@ -4,7 +4,7 @@ import axios from "axios";
 import Movie from "./Movie";
 import ModalMovie from "./ModalMovie";
 
-const MovieList = ({ moviesData }) => {
+const MovieList = ({ moviesData, isFavPage }) => {
     const [showModal, setShowModal] = useState(false);
     const [clickedMovie, setClickedMovie] = useState({});
     const [favoriteMovies, setFavoriteMovies] = useState([]);
@@ -12,7 +12,7 @@ const MovieList = ({ moviesData }) => {
     useEffect(() => {
         const fetchFavoriteMovies = async () => {
             try {
-                const response = await axios.get("https://movie-management.onrender.com/getmovie");
+                const response = await axios.get("http://localhost:8080/getmovie");
                 setFavoriteMovies(response.data);
             } catch (error) {
                 console.log(error);
@@ -34,12 +34,13 @@ const MovieList = ({ moviesData }) => {
             <Row>
                 {moviesData.map(item => (
                     <Col key={item.id}>
-                        <Movie item={item} showModal={handleShowModal} />
+                        <Movie item={item} showModal={handleShowModal} isFavPage={isFavPage} />
                     </Col>
                 ))}
             </Row>
             <ModalMovie 
                 show={showModal} 
+                isFavPage={isFavPage}
                 handleClose={handleCloseModal} 
                 clickedMovie={clickedMovie} 
                 favoriteMovies={favoriteMovies} 

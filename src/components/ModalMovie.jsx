@@ -5,25 +5,28 @@ import { Modal, Button, Card, Form } from 'react-bootstrap';
 const ModalMovie = (props) => {
     const handleAddComment = async (e) => {
         e.preventDefault();
-        const commentText = e.target.comment.value || "";
+        const comment = e.target.comment.value || "";
 
-        const obj = {
+        const movieData = {
             title: props.clickedMovie.title,
             release_date: props.clickedMovie.release_date,
-            posterpath: props.clickedMovie.posterpath,
+            poster_path: props.clickedMovie.poster_path,
             overview: props.clickedMovie.overview,
-            comment: commentText
+            comment: comment
         };
 
         try {
-            const response = await axios.post("https://movie-management.onrender.com/addMovie", obj);
+            const response = await axios.post("https://movies-library-1-hydu.onrender.com/addMovie", movieData);
             console.log(response);
-            console.log('success');
-          
-            props.setFavoriteMovies(prevMovies => [...prevMovies, {...obj, id: response.data.id}]);
-            props.handleClose(); 
+            console.log('Success');
+
+            // Update the favorite movies list with the new movie data
+            const updatedMovies = [...props.favoriteMovies, { ...movieData, id: response.data.id }];
+            props.updateFavoriteMovies(updatedMovies);
+
+            props.handleClose(); // Close the modal
         } catch (error) {
-            console.log(error);
+            console.log('Error:', error);
         }
     };
 
@@ -35,7 +38,7 @@ const ModalMovie = (props) => {
             <Modal.Body>
                 <Card.Img
                     variant="top"
-                    src={`https://image.tmdb.org/t/p/w185${props.clickedMovie.posterpath}`}
+                    src={`https://image.tmdb.org/t/p/w185${props.clickedMovie.poster_path}`}
                     width='100%'
                     style={{
                         width: "100%",
@@ -52,7 +55,7 @@ const ModalMovie = (props) => {
                         <Form.Control name='comment' placeholder="Enter your comment" />
                     </Form.Group>
                     <Button variant="primary" type='submit'>
-                        Submit and add to Favorite Page
+                        Submit and Add to Favorite Page
                     </Button>
                 </Form>
             </Modal.Body>

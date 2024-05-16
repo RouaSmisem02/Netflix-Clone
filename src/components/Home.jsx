@@ -8,7 +8,7 @@ function Home() {
 
     const getAllMovies = () => {
 
-        const serURL = `https://movie-management.onrender.com/trending`;
+        const serURL = `http://localhost:8080/trending`;
 
             axios.get(serURL)
 
@@ -25,7 +25,7 @@ function Home() {
     }, []);
     return (
         <>
-            <MovieList moviesData={moviesData} />
+            <MovieList moviesData={moviesData} isFavPage={false} />
 
         </>
     )

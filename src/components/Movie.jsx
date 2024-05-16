@@ -3,7 +3,7 @@ import { Card, Button } from 'react-bootstrap';
 import ModalMovie from './ModalMovie'; // Assuming ModalMovie and MovieList are correctly imported
 import MovieList from './MovieList'; // Assuming this import is needed
 
-const Movie = ({ item, showModal }) => {
+const Movie = ({ item, showModal, isFavPage }) => {
   const [showDescription, setShowDescription] = useState(false);
   const [cardHeight, setCardHeight] = useState('300px'); 
 
@@ -15,7 +15,7 @@ const Movie = ({ item, showModal }) => {
   return (
     <>
       <Card style={{ width: '18rem', marginBottom: '20px', backgroundColor: '#B8B8B8', fontFamily: 'Arial, sans-serif' }}>
-        <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w185${item.posterPath}`} />
+        <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w185${isFavPage?item.poster_path:item.posterPath}`} />
         <Card.Body style={{ height: cardHeight, overflow: 'hidden' }}> {/* Dynamic height for card body */}
           <Card.Title>{item.title}</Card.Title>
           {item.comment && (
@@ -29,9 +29,12 @@ const Movie = ({ item, showModal }) => {
           <Button variant="link" onClick={toggleDescription} style={{ color: 'blue', fontWeight: 'bold' }}>
             {showDescription ? 'Show Less' : 'Show More'}
           </Button>
-          <Button variant="primary" onClick={() => showModal(item)} style={{ marginTop: '10px', backgroundColor: 'white', color: 'blue', fontWeight: 'bold', width: '100%' }}>
+         {!isFavPage && <Button variant="primary" onClick={() => showModal(item)} style={{ marginTop: '10px', backgroundColor: 'white', color: 'blue', fontWeight: 'bold', width: '100%' }}>
             Add a Comment
-          </Button>
+          </Button>}
+          {isFavPage && <Button variant="primary" onClick={() => showModal(item)} style={{ marginTop: '10px', backgroundColor: 'white', color: 'blue', fontWeight: 'bold', width: '100%' }}>
+            Update a Comment
+          </Button>}
         </Card.Body>
       </Card>
      
