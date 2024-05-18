@@ -19,9 +19,23 @@ const ModalMovie = (props) => {
             const response = await axios.post("https://movie-management.onrender.com/addMovie", obj);
             console.log(response);
             console.log('success');
-          
-            props.setFavoriteMovies(prevMovies => [...prevMovies, {...obj, id: response.data.id}]);
-            props.handleClose(); 
+
+            props.setFavoriteMovies(prevMovies => [...prevMovies, { ...obj, id: response.data.id }]);
+            props.handleClose();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleDelete = async () => {
+        try {
+            await axios.delete(`https://movie-management.onrender.com/deleteMovie/${props.clickedMovie.id}`);
+            console.log('Movie deleted');
+            // Update the list of favorite movies after deletion
+            props.setFavoriteMovies(prevMovies =>
+                prevMovies.filter(movie => movie.id !== props.clickedMovie.id)
+            );
+            props.handleClose();
         } catch (error) {
             console.log(error);
         }
@@ -55,6 +69,9 @@ const ModalMovie = (props) => {
                         Submit and add to Favorite Page
                     </Button>
                 </Form>
+                <Button variant="danger" onClick={handleDelete} style={{ marginTop: '10px' }}>
+                    Delete Movie
+                </Button>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={props.handleClose}>

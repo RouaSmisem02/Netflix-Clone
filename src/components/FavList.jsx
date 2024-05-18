@@ -1,14 +1,14 @@
-import axios from "axios";
-import MovieList from "./MovieList";
+import React from 'react';
+import MovieList from './MovieList';
 import { useState, useEffect } from "react";
+import axios from 'axios';
 
-function Home() {
+const FavList = () => {
     const [moviesData, setMoviesData] = useState([]);
-
 
     const getAllMovies = () => {
 
-        const serURL = `https://movie-management.onrender.com/trending`;
+        const serURL = `http://localhost:301/viewmovies`;
 
             axios.get(serURL)
 
@@ -24,11 +24,11 @@ function Home() {
         getAllMovies();
     }, []);
     return (
-        <>
-            <MovieList moviesData={moviesData} />
-
-        </>
-    )
+        <div>
+            <h2>Favorite Movies</h2>
+            <MovieList isFavPage={true} moviesData={moviesData}/>
+        </div>
+    );
 }
 
-export default Home;
+export default FavList;
