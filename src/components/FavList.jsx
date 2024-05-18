@@ -8,7 +8,7 @@ const FavList = () => {
 
     const getAllMovies = () => {
 
-        const serURL = `http://localhost:8080/viewmovies`;
+        const serURL = `http://localhost:301/viewmovies`;
 
             axios.get(serURL)
 

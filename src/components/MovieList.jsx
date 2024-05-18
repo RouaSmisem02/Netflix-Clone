@@ -12,7 +12,7 @@ const MovieList = ({ moviesData, isFavPage }) => {
     useEffect(() => {
         const fetchFavoriteMovies = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/getmovie");
+                const response = await axios.get("https://movie-management.onrender.com/getmovie");
                 setFavoriteMovies(response.data);
             } catch (error) {
                 console.log(error);

@@ -5,28 +5,39 @@ import { Modal, Button, Card, Form } from 'react-bootstrap';
 const ModalMovie = (props) => {
     const handleAddComment = async (e) => {
         e.preventDefault();
-        const comment = e.target.comment.value || "";
+        const commentText = e.target.comment.value || "";
 
-        const movieData = {
+        const obj = {
             title: props.clickedMovie.title,
             release_date: props.clickedMovie.release_date,
-            poster_path: props.clickedMovie.poster_path,
+            posterpath: props.clickedMovie.posterpath,
             overview: props.clickedMovie.overview,
-            comment: comment
+            comment: commentText
         };
 
         try {
-            const response = await axios.post("https://movies-library-1-hydu.onrender.com/addMovie", movieData);
+            const response = await axios.post("https://movie-management.onrender.com/addMovie", obj);
             console.log(response);
-            console.log('Success');
+            console.log('success');
 
-            // Update the favorite movies list with the new movie data
-            const updatedMovies = [...props.favoriteMovies, { ...movieData, id: response.data.id }];
-            props.updateFavoriteMovies(updatedMovies);
-
-            props.handleClose(); // Close the modal
+            props.setFavoriteMovies(prevMovies => [...prevMovies, { ...obj, id: response.data.id }]);
+            props.handleClose();
         } catch (error) {
-            console.log('Error:', error);
+            console.log(error);
+        }
+    };
+
+    const handleDelete = async () => {
+        try {
+            await axios.delete(`https://movie-management.onrender.com/deleteMovie/${props.clickedMovie.id}`);
+            console.log('Movie deleted');
+            // Update the list of favorite movies after deletion
+            props.setFavoriteMovies(prevMovies =>
+                prevMovies.filter(movie => movie.id !== props.clickedMovie.id)
+            );
+            props.handleClose();
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -38,7 +49,7 @@ const ModalMovie = (props) => {
             <Modal.Body>
                 <Card.Img
                     variant="top"
-                    src={`https://image.tmdb.org/t/p/w185${props.clickedMovie.poster_path}`}
+                    src={`https://image.tmdb.org/t/p/w185${props.clickedMovie.posterpath}`}
                     width='100%'
                     style={{
                         width: "100%",
@@ -55,9 +66,12 @@ const ModalMovie = (props) => {
                         <Form.Control name='comment' placeholder="Enter your comment" />
                     </Form.Group>
                     <Button variant="primary" type='submit'>
-                        Submit and Add to Favorite Page
+                        Submit and add to Favorite Page
                     </Button>
                 </Form>
+                <Button variant="danger" onClick={handleDelete} style={{ marginTop: '10px' }}>
+                    Delete Movie
+                </Button>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={props.handleClose}>
