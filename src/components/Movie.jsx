@@ -50,4 +50,4 @@ const Movie = ({ item, showModal, isFavPage, handleDelete }) => { // Added handl
   );
 };
 
-export default Movie;
+export default Movie; // Corrected export
